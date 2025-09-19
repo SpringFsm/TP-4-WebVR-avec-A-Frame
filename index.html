@@ -62,7 +62,7 @@
 
             leftHand.addEventListener('thumbstickmoved', function (evt) {
                 const dx = evt.detail.x; // gauche/droite
-                const dy = evt.detail.y; // avant/arrière
+                const dy = -evt.detail.y; // avant/arrière
 
                 if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
                 let rigPos = rig.object3D.position;
