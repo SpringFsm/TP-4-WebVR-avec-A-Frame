@@ -30,17 +30,21 @@
       <a-cylinder position="0 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"
                   shadow="cast: true; receive: true"></a-cylinder>
 
-      <!-- Rig joueur -->
-      <a-entity id="rig" position="0 1.6 0">
-        <!-- Caméra (vue VR) -->
-        <a-entity camera look-controls wasd-controls-enabled="false"></a-entity>
+      <!-- Rig joueur avec movement-controls -->
+    <a-entity id="rig" position="0 1.6 0" 
+              movement-controls="fly: false; speed: 0.1; constrainToNavMesh: false">
+      
+      <!-- Caméra -->
+      <a-entity camera look-controls="pointerLockEnabled: false; touchEnabled: false"></a-entity>
 
-        <!-- Contrôleur gauche -->
-        <a-entity oculus-touch-controls="hand: left" shadow></a-entity>
+      <!-- Contrôleur gauche (déplacement avec joystick gauche) -->
+      <a-entity oculus-touch-controls="hand: left" 
+                movement-controls="hand: left; speed: 0.4"></a-entity>
 
-        <!-- Contrôleur droit -->
-        <a-entity oculus-touch-controls="hand: right" shadow></a-entity>
-      </a-entity>
+      <!-- Contrôleur droit (rotation avec joystick droit) -->
+      <a-entity oculus-touch-controls="hand: right" 
+                rotation-reader></a-entity>
+    </a-entity>
       <a-sky src="sky.png"></a-sky>
     </a-scene>
   </body>
