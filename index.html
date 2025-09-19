@@ -30,22 +30,90 @@
       <a-cylinder position="0 0.75 -3" radius="0.5" height="1.5" color="#FFC65D"
                   shadow="cast: true; receive: true"></a-cylinder>
 
-      <!-- Rig joueur avec movement-controls -->
-    <a-entity id="rig" position="0 1.6 0" 
-              movement-controls="fly: false; speed: 0.1; constrainToNavMesh: false">
-      
-      <!-- Caméra -->
-      <a-entity camera look-controls="pointerLockEnabled: false; touchEnabled: false"></a-entity>
+      <!-- Rig -->
+        <a-entity id="rig" position="0 0.25 0">
+            <a-entity id="head" camera look-controls wasd-controls="enabled: false"></a-entity>
 
-      <!-- Contrôleur gauche (déplacement avec joystick gauche) -->
-      <a-entity oculus-touch-controls="hand: left" 
-                movement-controls="hand: left; speed: 0.4"></a-entity>
+            <!-- Mains avec super-hands -->
+            <a-entity id="leftHand"
+                    hand-controls="hand: left; handModelStyle: lowPoly; color: #ffcccc"
+                    physics-collider
+                    super-hands>
+            </a-entity>
 
-      <!-- Contrôleur droit (rotation avec joystick droit) -->
-      <a-entity oculus-touch-controls="hand: right" 
-                rotation-reader></a-entity>
-    </a-entity>
+            <a-entity id="rightHand"
+                    hand-controls="hand: right; handModelStyle: lowPoly; color: #ccccff"
+                    physics-collider
+                    super-hands>
+            </a-entity>
+        </a-entity>
       <a-sky src="sky.png"></a-sky>
     </a-scene>
+
+    <script>
+      //Movement avec joystick
+      AFRAME.registerComponent('joystick-movement', {
+            schema: { speed: { type: 'number', default: 2 } },
+            init: function () {
+            const rig = document.querySelector('#rig');
+            const head = document.querySelector('#head');
+            const leftHand = document.querySelector('#leftHand');
+            const speed = this.data.speed;
+
+            leftHand.addEventListener('thumbstickmoved', function (evt) {
+                const dx = evt.detail.x; // gauche/droite
+                const dy = evt.detail.y; // avant/arrière
+
+                if (Math.abs(dx) > 0.1 || Math.abs(dy) > 0.1) {
+                let rigPos = rig.object3D.position;
+
+                const camDir = new THREE.Vector3();
+                head.object3D.getWorldDirection(camDir);
+                camDir.y = 0;
+                camDir.normalize();
+
+                const forward = camDir;
+                const right = new THREE.Vector3();
+                right.crossVectors(forward, new THREE.Vector3(0, 1, 0)).negate();
+
+                rigPos.addScaledVector(forward, -dy * 0.05 * speed);
+                rigPos.addScaledVector(right, dx * 0.05 * speed);
+                }
+            });
+            }
+        });
+
+        AFRAME.registerComponent('snap-turn', {
+            schema: {
+            angle: { type: 'number', default: 30 }, // angle de rotation par incrément
+            cooldown: { type: 'number', default: 300 } // délai entre deux rotations (ms)
+            },
+            init: function () {
+            const rig = document.querySelector('#rig');
+            const rightHand = document.querySelector('#rightHand');
+            const angle = this.data.angle;
+            const cooldown = this.data.cooldown;
+            let lastTurn = 0;
+
+            rightHand.addEventListener('thumbstickmoved', function (evt) {
+                const now = Date.now();
+                if (now - lastTurn < cooldown) return;
+
+                const x = evt.detail.x; // joystick horizontal
+                if (x > 0.8) {
+                rig.object3D.rotation.y -= THREE.MathUtils.degToRad(angle);
+                lastTurn = now;
+                } else if (x < -0.8) {
+                rig.object3D.rotation.y += THREE.MathUtils.degToRad(angle);
+                lastTurn = now;
+                }
+            });
+            }
+        });
+
+        // On attache les composants au rig
+        document.querySelector('#rig').setAttribute('joystick-movement', 'speed: 2');
+        document.querySelector('#rig').setAttribute('snap-turn', 'angle: 30; cooldown: 300');
+    </script>
   </body>
 </html>
