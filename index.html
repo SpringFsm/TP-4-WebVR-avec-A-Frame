@@ -112,30 +112,31 @@
       </a-entity>
 
       <!-- OBJETS SAISISSABLES (physiques) -->
-      <a-box class="grabbable" position="-1 2 2" rotation="0 45 0" color="#4CC3D9"
+      <a-box id="box" class="grabbable" position="-1 2 2" rotation="0 45 0" color="#4CC3D9"
              shadow="cast: true; receive: true"
              grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
              dynamic-body="mass: 1; shape: box">
       </a-box>
 
-      <a-sphere class="grabbable" position="0 2 -2" radius="0.5" color="#EF2D5E"
+      <a-sphere id="sphere" class="grabbable" position="0 2 -2" radius="0.5" color="#EF2D5E"
                 shadow="cast: true; receive: true"
                 grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
                 dynamic-body="mass: 0.5; shape: sphere">
       </a-sphere>
 
-      <a-cylinder class="grabbable" position="2 2 -2" radius="0.4" height="1" color="#FFC65D"
+      <a-cylinder id="cylinder" class="grabbable" position="2 2 -2" radius="0.4" height="1" color="#FFC65D"
                   shadow="cast: true; receive: true"
                   grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
                   dynamic-body="mass: 0.75; shape: cylinder">
       </a-cylinder>
 
-      <a-entity gltf-model="#gun"
-          position="0 2 -3" 
+      <a-entity id="Gun" gltf-model="#gun"
+          position="0 1.68382 -3.27856" 
           rotation="0 0 0" 
-          scale="0.01 0.01 0.01" 
+          scale="0.001 0.001 0.001" 
           shadow="cast: true; receive: true"
-          class="grabbable" 
+          class="grabbable"
+          grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
           dynamic-body="mass: 1">
       </a-entity>
 
