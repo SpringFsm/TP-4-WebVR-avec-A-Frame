@@ -12,14 +12,7 @@
   </head>
   <body>
     <a-scene shadow="type: pcfsoft" vr-mode-ui="enabled: true" renderer="antialias: true">
-      <a-assets>
-        <img id="sky-texture" src="sky.png">
-      </a-assets>
-
-      <!-- Skybox -->
-      <a-sky src="#sky-texture"></a-sky>
-
-      <!-- Lumières -->
+       <!-- Lumières -->
       <a-entity light="type: directional; intensity: 0.9; castShadow: true"
                 position="3 6 -2" shadow></a-entity>
       <a-entity light="type: ambient; intensity: 0.4"></a-entity>
@@ -29,7 +22,7 @@
                shadow="receive: true"></a-plane>
 
       <!-- Objets -->
-      <a-box position="-1 1 -3" rotation="0 45 0" color="#4CC3D9"
+      <a-box position="-2 1 -3" rotation="0 45 0" color="#4CC3D9"
              shadow="cast: true; receive: true"></a-box>
       <a-sphere position="2 1.25 -5" radius="1.25" color="#EF2D5E"
                 shadow="cast: true; receive: true"></a-sphere>
