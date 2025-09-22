@@ -81,13 +81,18 @@
         const hand = this.data.hand;
         const speed = this.data.bulletSpeed;
 
+        // Récupérer la position de tir
+        const shootPos = el.querySelector('#shootPos');
+
         hand.addEventListener('triggerdown', () => {
 
-          if (!el.is('grabbed')) return; // si pas grab, on ne tire pas
-          
+          if (!el.is('grabbed')) return; // Tir seulement si le gun est en main
+
           // Créer la balle
           const bullet = document.createElement('a-sphere');
-          const startPos = el.object3D.getWorldPosition(new THREE.Vector3());
+
+          // Positionner la balle sur shootPos
+          const startPos = shootPos.object3D.getWorldPosition(new THREE.Vector3());
           bullet.setAttribute('position', startPos);
           bullet.setAttribute('radius', 0.05);
           bullet.setAttribute('color', '#F00');
@@ -98,14 +103,15 @@
           // Ajouter la balle à la scène
           el.sceneEl.appendChild(bullet);
 
-          // Calculer la direction du tir
-          const direction = new THREE.Vector3();
-          el.object3D.getWorldDirection(direction);
+          // Calculer la direction vers l'avant de shootPos
+          const direction = new THREE.Vector3(0, 0, -1); // Avant local
+          shootPos.object3D.getWorldQuaternion(new THREE.Quaternion())
+            .multiply(new THREE.Quaternion())
+            .setFromAxisAngle(new THREE.Vector3(0,0,0),0); // pas nécessaire mais peut garder pour ajuster
 
-          // Appliquer rotation de 90° à gauche
-          const quaternion = new THREE.Quaternion();
-          quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
-          direction.applyQuaternion(quaternion);
+          shootPos.object3D.getWorldQuaternion(new THREE.Quaternion()).multiply(direction); // inutile ici
+
+          shootPos.object3D.getWorldDirection(direction); // récupère la direction avant correctement
           direction.normalize();
 
           // Appliquer la vitesse initiale via A-Frame Physics
@@ -118,8 +124,6 @@
         });
       }
     });
-
-
 
     </script>
   </head>
@@ -197,6 +201,8 @@
           gltf-model="#gun"
           scale="0.1 0.1 0.1"
           shadow="cast: true; receive: true">
+
+          <a-entity id="shootPos" rotation="0 -90 0" position="-2.40375 0.68138 0"></a-entity>
         </a-entity>
       </a-entity>
 
