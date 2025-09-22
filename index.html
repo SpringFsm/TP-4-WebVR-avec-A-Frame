@@ -92,7 +92,7 @@
       <a-entity light="type: directional; intensity: 1; castShadow: true" position="2 4 -2"></a-entity>
 
       <!-- RIG + caméra + contrôleurs -->
-      <a-entity id="rig" position="0 0 0" joystick-movement="speed: 2" snap-turn="angle: 30; cooldown: 300">
+      <a-entity id="rig" position="0.77334 0.16159 4.0298" joystick-movement="speed: 2" snap-turn="angle: 30; cooldown: 300">
         <a-entity id="head" camera wasd-controls-enabled="false" look-controls></a-entity>
 
         <!-- Mains : super-hands limité au bouton grip (side) + collision par sphère -->
@@ -112,42 +112,37 @@
       </a-entity>
 
       <!-- OBJETS SAISISSABLES (physiques) -->
-      <a-box id="box" class="grabbable" position="-1 2 2" rotation="0 45 0" color="#4CC3D9"
+      <a-box id="box" class="grabbable" position="0.39839 1.34898 -4.73534" rotation="0 45 0" color="#4CC3D9"
              shadow="cast: true; receive: true"
              grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
              dynamic-body="mass: 1; shape: box">
       </a-box>
 
-      <a-sphere id="sphere" class="grabbable" position="0 2 -2" radius="0.5" color="#EF2D5E"
+      <a-sphere id="sphere" class="grabbable" position="-2.22715 1.32169 -1.28134" radius="0.5" color="#EF2D5E"
                 shadow="cast: true; receive: true"
                 grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
                 dynamic-body="mass: 0.5; shape: sphere">
       </a-sphere>
 
-      <a-cylinder id="cylinder" class="grabbable" position="2 2 -2" radius="0.4" height="1" color="#FFC65D"
+      <a-cylinder id="cylinder" class="grabbable" position="3.74305 1.58472 -2.06682" radius="0.4" height="1" color="#FFC65D"
                   shadow="cast: true; receive: true"
                   grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
                   dynamic-body="mass: 0.75; shape: cylinder">
       </a-cylinder>
 
-      <!-- Parent = modèle du gun -->
-      <a-entity id="Gun"
-                gltf-model="#gun"
-                position="0 1.7 -3.2"
-                rotation="0 0 0"
-                scale="0.001 0.001 0.001"
-                shadow="cast: true; receive: true">
+      <a-entity id="GunWrapper"
+        position="-0.60837 1.72186 -2.9961"
+        class="grabbable"
+        shadow="cast: false; receive: false"
+        grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
+        dynamic-body="mass: 1; shape: box; halfExtents: 0.15 0.075 0.025">
 
-        <!-- Enfant invisible = collider -->
-        <a-box id="GunCollider"
-              class="grabbable"
-              width="0.3" height="0.15" depth="0.05"
-              visible="false"
-              shadow="cast: false; receive: false"
-              grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-              dynamic-body="mass: 1">
-        </a-box>
+        <a-entity gltf-model="#gun"
+          scale="0.001 0.001 0.001"
+          shadow="cast: true; receive: true">
+        </a-entity>
       </a-entity>
+
 
       <!-- Sol -->
       <a-plane position="0 0 -1" rotation="-90 0 0" width="100" height="100" src="#groundTexture"
