@@ -71,11 +71,10 @@
       });
     
     // Gun Shooting
-    // Gun Shooting
     AFRAME.registerComponent('gun-shoot', {
       schema: {
-        hand: {type: 'selector'},    
-        bulletSpeed: {type: 'number', default: 100} 
+        hand: { type: 'selector' },    
+        bulletSpeed: { type: 'number', default: 100 }
       },
       init: function () {
         const el = this.el;
@@ -83,33 +82,40 @@
         const speed = this.data.bulletSpeed;
 
         hand.addEventListener('triggerdown', () => {
+          // Créer la balle
           const bullet = document.createElement('a-sphere');
-          bullet.setAttribute('position', el.object3D.getWorldPosition(new THREE.Vector3()));
+          const startPos = el.object3D.getWorldPosition(new THREE.Vector3());
+          bullet.setAttribute('position', startPos);
           bullet.setAttribute('radius', 0.02);
           bullet.setAttribute('color', '#F00');
-          bullet.setAttribute('dynamic-body', 'mass: 0.1; shape: sphere');
 
+          // Ajouter le corps physique
+          bullet.setAttribute('dynamic-body', `mass: 0.1; shape: sphere`);
+
+          // Ajouter la balle à la scène
           el.sceneEl.appendChild(bullet);
 
+          // Calculer la direction du tir
           const direction = new THREE.Vector3();
           el.object3D.getWorldDirection(direction);
 
-          // Corriger la direction vers la gauche de 90°
+          // Appliquer rotation de 90° à gauche
           const quaternion = new THREE.Quaternion();
-          quaternion.setFromAxisAngle(new THREE.Vector3(0,1,0), -Math.PI / 2);
+          quaternion.setFromAxisAngle(new THREE.Vector3(0, 1, 0), -Math.PI / 2);
           direction.applyQuaternion(quaternion);
-
           direction.normalize();
 
-          bullet.body.applyImpulse(
-            new CANNON.Vec3(direction.x * speed, direction.y * speed, direction.z * speed),
-            new CANNON.Vec3().copy(bullet.getAttribute('position'))
-          );
+          // Appliquer la vitesse initiale via A-Frame Physics
+          bullet.addEventListener('body-loaded', () => {
+            bullet.setAttribute('velocity', `${direction.x * speed} ${direction.y * speed} ${direction.z * speed}`);
+          });
 
+          // Supprimer la balle après 5 secondes
           setTimeout(() => { bullet.remove(); }, 5000);
         });
       }
     });
+
 
 
     </script>
