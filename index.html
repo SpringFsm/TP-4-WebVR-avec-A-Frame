@@ -71,10 +71,11 @@
       });
     
     // Gun Shooting
+    // Gun Shooting
     AFRAME.registerComponent('gun-shoot', {
       schema: {
         hand: {type: 'selector'},    // la main qui tire
-        bulletSpeed: {type: 'number', default: 15} // vitesse du projectile
+        bulletSpeed: {type: 'number', default: 30} // vitesse du projectile
       },
       init: function () {
         const el = this.el;
@@ -85,7 +86,7 @@
           // créer la balle
           const bullet = document.createElement('a-sphere');
           bullet.setAttribute('position', el.object3D.getWorldPosition(new THREE.Vector3()));
-          bullet.setAttribute('radius', 0.05);
+          bullet.setAttribute('radius', 0.03);
           bullet.setAttribute('color', '#F00');
           bullet.setAttribute('dynamic-body', 'mass: 0.1; shape: sphere');
 
@@ -93,7 +94,7 @@
           el.sceneEl.appendChild(bullet);
 
           // calculer la direction du tir (orientation du gun)
-          const direction = new THREE.Vector3(0,0,-1);
+          const direction = new THREE.Vector3();
           el.object3D.getWorldDirection(direction);
           direction.normalize();
 
@@ -108,6 +109,7 @@
         });
       }
     });
+
     </script>
   </head>
 
@@ -178,7 +180,7 @@
         visible="true"
         grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
         dynamic-body="mass: 1; shape: box"
-        gun-shoot="hand: #rightHand; bulletSpeed: 20">
+        gun-shoot="hand: #rightHand;">
 
         <a-entity id="gunModel" position="0.08905 0.00241 -0.00122"
           gltf-model="#gun"
