@@ -84,7 +84,7 @@
       <a-assets>
         <img id="skyTexture" src="assets/sky.png" />
         <img id="groundTexture" src="assets/ground.jpg" />
-        <a-asset-item id="gun" src="assets/desert_eagle_gun.glb"></a-asset-item>
+        <a-asset-item id="gun" src="assets/sci_fi_gun_model.glb"></a-asset-item>
       </a-assets>
 
       <!-- Lumières -->
@@ -130,18 +130,22 @@
                   dynamic-body="mass: 0.75; shape: cylinder">
       </a-cylinder>
 
-      <a-entity id="GunWrapper"
-        position="-0.60837 1.72186 -2.9961"
+
+      <!-- Gun -->
+      <a-entity id="GunWrapper" scale="0.4 0.4 0.4"
+        position="0 2 -2"
         class="grabbable"
         shadow="cast: false; receive: false"
+        geometry="primitive: box; width: 0.3; height: 0.15; depth: 0.05; visible: false"
         grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-        dynamic-body="mass: 1; shape: box; halfExtents: 0.15 0.075 0.025">
-
+        dynamic-body="mass: 1; shape: box">
+        
         <a-entity gltf-model="#gun"
-          scale="0.001 0.001 0.001"
+          scale="1 1 1"
           shadow="cast: true; receive: true">
         </a-entity>
       </a-entity>
+
 
 
       <!-- Sol -->
