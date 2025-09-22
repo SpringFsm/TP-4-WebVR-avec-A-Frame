@@ -70,6 +70,46 @@
         }
       });
     </script>
+    <!-- Gun Shooting -->
+    <script>
+    AFRAME.registerComponent('gun-shoot', {
+      schema: {
+        hand: {type: 'selector'},    // la main qui tire
+        bulletSpeed: {type: 'number', default: 15} // vitesse du projectile
+      },
+      init: function () {
+        const el = this.el;
+        const hand = this.data.hand;
+        const speed = this.data.bulletSpeed;
+
+        hand.addEventListener('triggerdown', () => {
+          // créer la balle
+          const bullet = document.createElement('a-sphere');
+          bullet.setAttribute('position', el.object3D.getWorldPosition(new THREE.Vector3()));
+          bullet.setAttribute('radius', 0.05);
+          bullet.setAttribute('color', '#F00');
+          bullet.setAttribute('dynamic-body', 'mass: 0.1; shape: sphere');
+
+          // ajouter la balle à la scène
+          el.sceneEl.appendChild(bullet);
+
+          // calculer la direction du tir (orientation du gun)
+          const direction = new THREE.Vector3(0,0,-1);
+          el.object3D.getWorldDirection(direction);
+          direction.normalize();
+
+          // appliquer une impulsion pour simuler le tir
+          bullet.body.applyImpulse(
+            new CANNON.Vec3(direction.x * speed, direction.y * speed, direction.z * speed),
+            new CANNON.Vec3().copy(bullet.getAttribute('position'))
+          );
+
+          // optionnel : supprimer la balle après 5s
+          setTimeout(() => { bullet.remove(); }, 5000);
+        });
+      }
+    });
+    </script>
   </head>
 
   <body>
@@ -138,8 +178,9 @@
         material="opacity: 0; transparent: true"
         visible="true"
         grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-        dynamic-body="mass: 1; shape: box">
-        
+        dynamic-body="mass: 1; shape: box"
+        gun-shoot="hand: #rightHand; bulletSpeed: 20">
+
         <a-entity id="gunModel" position="0.08905 0.00241 -0.00122"
           gltf-model="#gun"
           scale="0.1 0.1 0.1"
