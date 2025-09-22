@@ -74,7 +74,7 @@
     AFRAME.registerComponent('gun-shoot', {
       schema: {
         hand: { type: 'selector' },    
-        bulletSpeed: { type: 'number', default: 100 }
+        bulletSpeed: { type: 'number', default: 60 }
       },
       init: function () {
         const el = this.el;
@@ -86,7 +86,7 @@
           const bullet = document.createElement('a-sphere');
           const startPos = el.object3D.getWorldPosition(new THREE.Vector3());
           bullet.setAttribute('position', startPos);
-          bullet.setAttribute('radius', 0.02);
+          bullet.setAttribute('radius', 0.04);
           bullet.setAttribute('color', '#F00');
 
           // Ajouter le corps physique
