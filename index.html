@@ -82,6 +82,9 @@
         const speed = this.data.bulletSpeed;
 
         hand.addEventListener('triggerdown', () => {
+
+          if (!el.is('grabbed')) return; // si pas grab, on ne tire pas
+          
           // Créer la balle
           const bullet = document.createElement('a-sphere');
           const startPos = el.object3D.getWorldPosition(new THREE.Vector3());
