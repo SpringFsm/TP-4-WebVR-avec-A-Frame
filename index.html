@@ -90,6 +90,7 @@
 
           // Créer la balle
           const bullet = document.createElement('a-sphere');
+          bullet.classList.add('bullet');
 
           // Positionner la balle sur shootPos
           const startPos = shootPos.object3D.getWorldPosition(new THREE.Vector3());
@@ -125,6 +126,29 @@
       }
     });
 
+    // Destruction des objets
+    AFRAME.registerComponent('destructible', {
+      init: function () {
+        const el = this.el;
+        el.addEventListener('collide', function (e) {
+          const other = e.detail.body.el;
+          // On ne réagit qu'aux balles
+          if (!other || !other.classList.contains('bullet')) return;
+
+          // Jouer un son au point d'impact
+          const sound = document.createElement('a-entity');
+          sound.setAttribute('sound', `src: #hitSound; autoplay: true`);
+          sound.object3D.position.copy(el.object3D.position);
+          el.sceneEl.appendChild(sound);
+
+          // Supprimer l'objet après 200ms
+          setTimeout(()=> el.parentNode && el.parentNode.removeChild(el),200);
+
+          // Supprimer la balle aussi (optionnel)
+          setTimeout(()=> other.parentNode && other.parentNode.removeChild(other),100);
+        });
+      }
+    });
     </script>
   </head>
 
@@ -141,6 +165,7 @@
         <img id="skyTexture" src="assets/sky.png" />
         <img id="groundTexture" src="assets/ground.jpg" />
         <a-asset-item id="gun" src="assets/sci_fi_gun_model.glb"></a-asset-item>
+        <audio id="hitSound" src="assets/bulletHit.mp3"></audio>
       </a-assets>
 
       <!-- Lumières -->
@@ -171,20 +196,9 @@
       <a-box id="box" class="grabbable" position="0.39839 1.34898 -4.73534" rotation="0 45 0" color="#4CC3D9"
              shadow="cast: true; receive: true"
              grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-             dynamic-body="mass: 1; shape: box">
+             dynamic-body="mass: 1; shape: box"
+             destructible>
       </a-box>
-
-      <a-sphere id="sphere" class="grabbable" position="-2.22715 1.32169 -1.28134" radius="0.5" color="#EF2D5E"
-                shadow="cast: true; receive: true"
-                grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-                dynamic-body="mass: 0.5; shape: sphere">
-      </a-sphere>
-
-      <a-cylinder id="cylinder" class="grabbable" position="3.74305 1.58472 -2.06682" radius="0.4" height="1" color="#FFC65D"
-                  shadow="cast: true; receive: true"
-                  grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-                  dynamic-body="mass: 0.75; shape: cylinder">
-      </a-cylinder>
 
       <a-entity id="GunWrapper" rotation="0 0 0" scale="1.5 1.5 1.5"
         position="2.53101 3.10454 0.06401"
