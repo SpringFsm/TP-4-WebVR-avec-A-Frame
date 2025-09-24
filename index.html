@@ -81,12 +81,21 @@
         const hand = this.data.hand;
         const speed = this.data.bulletSpeed;
 
+        // Ajouter un son de tir au pistolet
+        this.shootSound = document.createElement('a-entity');
+        this.shootSound.setAttribute('sound', 'src: #shootSound; autoplay: false; volume: 1');
+        el.appendChild(this.shootSound);
+
         // Récupérer la position de tir
         const shootPos = el.querySelector('#shootPos');
 
         hand.addEventListener('triggerdown', () => {
 
           if (!el.is('grabbed')) return; // Tir seulement si le gun est en main
+
+          // Jouer le son
+          this.shootSound.components.sound.stopSound(); // remet à zéro si spam
+          this.shootSound.components.sound.playSound();
 
           // Créer la balle
           const bullet = document.createElement('a-sphere');
@@ -166,6 +175,7 @@
         <img id="groundTexture" src="assets/ground.jpg" />
         <a-asset-item id="gun" src="assets/sci_fi_gun_model.glb"></a-asset-item>
         <audio id="hitSound" src="assets/bulletHit.mp3"></audio>
+        <audio id="shootSound" src="assets/gunshot.mp3"></audio>
       </a-assets>
 
       <!-- Lumières -->
