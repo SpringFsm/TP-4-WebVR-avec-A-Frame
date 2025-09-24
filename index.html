@@ -163,6 +163,47 @@
         });
       }
     });
+
+    // --- SPAWN DE CUBES ALÉATOIRES ---
+    AFRAME.registerComponent('cube-spawner', {
+      schema: {
+        interval: { type: 'number', default: 2000 }, // délai entre spawns en ms
+        range:    { type: 'number', default: 10 }    // zone aléatoire X/Z
+      },
+      init: function () {
+        const scene = this.el;
+        const interval = this.data.interval;
+        const range = this.data.range;
+
+        setInterval(() => {
+          // taille aléatoire (0.5 → 2.0)
+          const size = THREE.MathUtils.randFloat(0.5, 2);
+
+          // position aléatoire (X et Z dans [-range, +range])
+          const posX = THREE.MathUtils.randFloatSpread(range * 2); // -range à +range
+          const posZ = THREE.MathUtils.randFloatSpread(range * 2);
+
+          // rotation aléatoire
+          const rotY = THREE.MathUtils.randFloat(0, 180);
+          const rotX = THREE.MathUtils.randFloat(0, 180);
+          const rotZ = THREE.MathUtils.randFloat(0, 180);
+
+          // créer le cube
+          const cube = document.createElement('a-box');
+          cube.setAttribute('position', `${posX} 5 ${posZ}`);
+          cube.setAttribute('rotation', `${rotX} ${rotY} ${rotZ}`);
+          cube.setAttribute('scale', `${size} ${size} ${size}`);
+          cube.setAttribute('color', '#'+Math.floor(Math.random()*16777215).toString(16)); // couleur aléatoire
+          cube.setAttribute('shadow', 'cast: true; receive: true');
+          cube.setAttribute('grabbable', 'usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend');
+          cube.setAttribute('dynamic-body', 'mass: 1; shape: box');
+          cube.setAttribute('destructible', '');
+
+          scene.appendChild(cube);
+        }, interval);
+      }
+    });
+
     </script>
   </head>
 
@@ -173,6 +214,7 @@
       vr-mode-ui="enabled: true"
       device-orientation-permission-ui="enabled: true"
       physics="gravity: -9.8; debug: false"
+      cube-spawner="interval: 3000; range: 10"
     >
       <!-- Assets -->
       <a-assets>
