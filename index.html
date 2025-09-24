@@ -214,7 +214,7 @@
       vr-mode-ui="enabled: true"
       device-orientation-permission-ui="enabled: true"
       physics="gravity: -9.8; debug: false"
-      cube-spawner="interval: 3000; range: 10"
+      cube-spawner="interval: 2000; range: 10"
     >
       <!-- Assets -->
       <a-assets>
@@ -248,29 +248,7 @@
           static-body="shape: sphere; sphereRadius: 0.03">
         </a-entity>
       </a-entity>
-
-      <!-- OBJETS SAISISSABLES (physiques) -->
-      <a-box id="box" class="grabbable" position="-5.19013 1.19381 0.75354" rotation="0 45 20" color="#4CC3D9"
-             shadow="cast: true; receive: true"
-             grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-             dynamic-body="mass: 1; shape: box"
-             destructible>
-      </a-box>
-
-      <a-box id="box1" class="grabbable" position="-2.16439 2.48242 0" rotation="0 45 0" color="#4CC3D9"
-             shadow="cast: true; receive: true"
-             grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-             dynamic-body="mass: 1; shape: box"
-             destructible>
-      </a-box>
-
-      <a-box id="box2" class="grabbable" position="-5.91639 4.85571 -6.3178" rotation="0 45 0" color="#4CC3D9"
-             shadow="cast: true; receive: true"
-             grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
-             dynamic-body="mass: 1; shape: box"
-             destructible>
-      </a-box>
-
+      
       <a-entity id="GunWrapper" rotation="0 0 0" scale="1.5 1.5 1.5"
         position="2.53101 3.10454 0.06401"
         class="grabbable"
