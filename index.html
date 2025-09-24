@@ -80,6 +80,8 @@
         const el = this.el;
         const hand = this.data.hand;
         const speed = this.data.bulletSpeed;
+        let lastShot = 0;
+        const cooldown = 300;
 
         // Ajouter un son de tir au pistolet
         this.shootSound = document.createElement('a-entity');
@@ -91,7 +93,10 @@
 
         hand.addEventListener('triggerdown', () => {
 
+          const now = Date.now();
           if (!el.is('grabbed')) return; // Tir seulement si le gun est en main
+          if (now - lastShot < cooldown) return; // bloque si délai pas écoulé
+          lastShot = now;
 
           // Jouer le son
           this.shootSound.components.sound.stopSound(); // remet à zéro si spam
