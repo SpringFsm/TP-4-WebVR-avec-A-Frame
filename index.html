@@ -193,7 +193,21 @@
       </a-entity>
 
       <!-- OBJETS SAISISSABLES (physiques) -->
-      <a-box id="box" class="grabbable" position="0.39839 1.34898 -4.73534" rotation="0 45 0" color="#4CC3D9"
+      <a-box id="box" class="grabbable" position="-5.19013 1.19381 0.75354" rotation="0 45 20" color="#4CC3D9"
+             shadow="cast: true; receive: true"
+             grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
+             dynamic-body="mass: 1; shape: box"
+             destructible>
+      </a-box>
+
+      <a-box id="box1" class="grabbable" position="-2.16439 2.48242 0" rotation="0 45 0" color="#4CC3D9"
+             shadow="cast: true; receive: true"
+             grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
+             dynamic-body="mass: 1; shape: box"
+             destructible>
+      </a-box>
+
+      <a-box id="box2" class="grabbable" position="-5.91639 4.85571 -6.3178" rotation="0 45 0" color="#4CC3D9"
              shadow="cast: true; receive: true"
              grabbable="usePhysics: only; startButtons: gripdown, squeezestart; endButtons: gripup, squeezeend"
              dynamic-body="mass: 1; shape: box"
